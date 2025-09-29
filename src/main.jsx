@@ -2,7 +2,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import FHIR from "fhirclient";
-import SmartPHQ9App from "./SmartPHQ9App";
+import SmartPHQ9App from "./smart-phq9-git";
 import "./index.css"; // or your global styles
 
 // 🔹 Kick off SMART on FHIR OAuth2
@@ -10,7 +10,7 @@ FHIR.oauth2.authorize({
   clientId: "smart-phq9-app", // must match what you register in SMART Launcher
   scope:
     "launch/patient patient/QuestionnaireResponse.write patient/Observation.write openid fhirUser offline_access",
-  redirectUri: "http://localhost:5173/", // must EXACTLY match SMART Launcher config
+  redirectUri: ""https://chotu-winter.github.io/smart-phq9-git/index.html", // must EXACTLY match SMART Launcher config
 });
 
 // 🔹 Once authorized, hand off the client to your app
