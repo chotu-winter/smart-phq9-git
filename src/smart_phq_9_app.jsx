@@ -62,19 +62,30 @@ const SmartPHQ9App = () => {
   const [submittedResponses, setSubmittedResponses] = useState([]);
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
-    const fetchPatient = async () => {
-      try {
-        const client = await FHIR.oauth2.ready();
-        setClient(client);
-        const patient = await client.patient.read();
-        setPatient(patient);
-      } catch (error) {
-        console.error("Error initializing SMART on FHIR:", error);
-      }
-    };
-    fetchPatient();
-  }, []);
+useEffect(() => {
+  const fetchPatient = async () => {
+    try {
+      // Try SMART OAuth2
+      const client = await FHIR.oauth2.ready();
+      setClient(client);
+      const patient = await client.patient.read();
+      setPatient(patient);
+    } catch (error) {
+      console.warn(
+        "SMART launch not detected, using mock patient for testing."
+      );
+      // ✅ Mock patient for GitHub Pages testing
+      setPatient({
+        id: "mock-patient-1",
+        name: [{ given: ["John"], family: "Doe" }],
+        gender: "male",
+        birthDate: "1985-05-15",
+      });
+    }
+  };
+  fetchPatient();
+}, []);
+
 
   const handleChange = (qIndex, value) => {
     setResponses((prev) => ({ ...prev, [qIndex]: value }));
