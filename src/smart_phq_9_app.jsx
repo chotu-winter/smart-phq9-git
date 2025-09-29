@@ -209,80 +209,88 @@ const SmartPHQ9App = () => {
   };
 
   return (
-    <div className="app-container">
-      <div className="header">PHQ-9 Depression Questionnaire</div>
+  <div className="app-container">
+    <div className="header">PHQ-9 Depression Questionnaire</div>
 
-      <div className="patient-info">
-        Patient:{" "}
-        {patient
-          ? `${patient.name?.[0]?.given?.join(" ")} ${patient.name?.[0]?.family}`
-          : "Loading..."}{" "}
-        &nbsp; Gender: {patient ? patient.gender : "..."} &nbsp; Age:{" "}
-        {patient
-          ? new Date().getFullYear() - new Date(patient.birthDate).getFullYear()
-          : "..."}{" "}
-        &nbsp; Date: {new Date().toLocaleString()}
-      </div>
+    <div className="patient-info">
+      Patient:{" "}
+      {patient
+        ? `${patient.name?.[0]?.given?.join(" ")} ${patient.name?.[0]?.family}`
+        : "Loading..."}{" "}
+      &nbsp; Gender: {patient ? patient.gender : "..."} &nbsp; Age:{" "}
+      {patient
+        ? new Date().getFullYear() - new Date(patient.birthDate).getFullYear()
+        : "..."}{" "}
+      &nbsp; Date: {new Date().toLocaleString()}
+    </div>
 
-      <div className="instruction">
-        Over the last 2 weeks, how often have you been bothered by the following problems?
-      </div>
+    <div className="instruction">
+      Over the last 2 weeks, how often have you been bothered by the following problems?
+    </div>
 
-      {questions.map((q, idx) => (
-        <div key={idx} id={`question-${idx}`} className="question-card">
-          <div className="question-text">
-            {idx + 1}. {q}
-          </div>
-          <div className="options-row">
-            {options.map((opt) => (
-              <label key={opt.value} className="option-label">
-                <input
-                  type="radio"
-                  name={`q-${idx}`}
-                  value={opt.value}
-                  checked={responses[idx] === opt.value}
-                  onChange={() => handleChange(idx, opt.value)}
-                />
-                {opt.label}
-              </label>
-            ))}
-          </div>
-          {errors[idx] && (
-            <div className="error-message">⚠️ Please answer this question.</div>
-          )}
+    {questions.map((q, idx) => (
+      <div key={idx} id={`question-${idx}`} className="question-card">
+        <div className="question-text">
+          {idx + 1}. {q}
         </div>
-      ))}
-
-      <div className="button-row">
-        <button className="no-wrap" onClick={handleSubmit}>
-          Submit Response
-        </button>
+        <div className="options-row">
+          {options.map((opt) => (
+            <label key={opt.value} className="option-label">
+              <input
+                type="radio"
+                name={`q-${idx}`}
+                value={opt.value}
+                checked={responses[idx] === opt.value}
+                onChange={() => handleChange(idx, opt.value)}
+              />
+              {opt.label}
+            </label>
+          ))}
+        </div>
+        {errors[idx] && (
+          <div className="error-message">⚠️ Please answer this question.</div>
+        )}
       </div>
+    ))}
 
-      {submittedResponses.length > 0 && (
-        <div className="past-responses">
-          <h3>Past Responses</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Score</th>
-                <th>Severity</th>
+    <div className="button-row">
+      <button className="no-wrap" onClick={handleSubmit}>
+        Submit Response
+      </button>
+    </div>
+
+    {submittedResponses.length > 0 && (
+      <div className="past-responses">
+        <h3>Past Responses</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Score</th>
+              <th>Severity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {submittedResponses.map((res, idx) => (
+              <tr key={idx} className={getSeverityClass(res.severity)}>
+                <td>{res.date}</td>
+                <td>{res.score}</td>
+                <td>{res.severity}</td>
               </tr>
-            </thead>
-            <tbody>
-              {submittedResponses.map((res, idx) => (
-                <tr key={idx} className={getSeverityClass(res.severity)}>
-                  <td>{res.date}</td>
-                  <td>{res.score}</td>
-                  <td>{res.severity}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
 
-      {submittedResponses.length > 0 && (
-        <div className="chart-container">
-          <h3>PHQ-9 Scores Over Time</h3>
+    {submittedResponses.length > 0 && (
+      <div className="chart-container">
+        <h3>PHQ-9 Scores Over Time</h3>
+        {/* Your chart component stays here */}
+      </div>
+    )}
+
+  </div>
+);
+};
+export default SmartPHQ9App;
